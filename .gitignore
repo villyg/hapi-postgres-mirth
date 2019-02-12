@@ -1,0 +1,8 @@
+hapi/target
+hapi-data/db/*
+mirth-data/db/*
+mirth-data/spools/in/*
+mirth-data/spools/out/*
+files/done/*
+files/in/*
+files/error/*

@@ -1,0 +1,60 @@
+version: '2'
+
+services:
+
+  hapi-database:
+    build: ./hapi-data
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"    
+    volumes:
+      - ./hapi-data/db:/var/lib/postgresql/data
+
+  hapi:  
+    build: ./hapi
+    ports:
+      - "8080:8080"
+    links:
+      - hapi-database
+    depends_on:
+      - hapi-database      
+
+  mirth-database:
+    image: mysql:5.6
+    command: mysqld --innodb-buffer-pool-size=20M
+    volumes:
+      - "./mirth-data/db:/var/lib/mysql:rw"
+    environment:
+      - "MYSQL_DATABASE=mirth-test"
+      - "MYSQL_USER=mirth"
+      - "MYSQL_PASSWORD=password"
+      - "MYSQL_ROOT_PASSWORD=password"
+    ports: 
+      - "3306:3306"
+
+  mirth-connect:
+    build: mirth-connect
+    volumes:
+      - "./mirth-connect/mirth.properties:/opt/mirth-connect/conf/mirth.properties:ro"
+      - "./mirth-data/spools/:/var/spool/mirth/:rw"
+      - "./files:/opt/mirth-connect/files:rw"
+    ports: 
+      - "8083:8080"
+      - "8444:8443"
+    links:
+      - mirth-database:mysql
+    depends_on:
+      - mirth-database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8181:80"
+    environment:
+      - "MYSQL_USERNAME=root"
+      - "MYSQL_PASSWORD=password"
+    links:
+      - mirth-database:db
+    depends_on:
+      - mirth-database

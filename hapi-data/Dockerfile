@@ -1,0 +1,7 @@
+FROM postgres:9.6.11  
+MAINTAINER lpradel
+
+ENV POSTGRES_USER dbadmin  
+ENV POSTGRES_PASSWORD MyCrazyDbPassw0rd!!!  
+ENV POSTGRES_DB hapi
+
