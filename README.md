@@ -1,6 +1,6 @@
-# mirth-connect-docker
+# HAPI FHIR + Postgres + Mirth
 
-Mirth-Connect Docker Stack (Mirth-Connect container + Mysql container + PHPMyAdmin container)
+Turnkey solution to spin up HAPI FHIR on top of PostgreSQL as well as Mirth Connect on top of MySQL to seed it with data.
 
 ## Prerequirements
 
